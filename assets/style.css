@@ -24,6 +24,63 @@
    리터럴 텍스트를 HTML에 직접 써넣을 것. .estimate-label은 진하게 테두리 친 알약형
    칩으로 렌더링되므로, 텍스트를 비워두면 숫자 옆에 빈 테두리만 떠서 시각적으로 어색해
    보이도록 의도적으로 설계했다 — 텍스트 누락을 시각적으로 감지 가능하게 하는 안전장치).
+
+   2026-07 라운드8 추가 (UI키트 이식, 정민아 프로젝트에서 검증된 패턴 재사용):
+   .icon-badge·순수 CSS/SVG 차트 2종(.chart-donut/.chart-bar)·목업 프리미티브 4종을
+   추가한다. ★.insight-convergence는 이식하지 않음 — 이 프로젝트는 이미
+   .tension-grid+.stance-card(이해관계자 긴장)·.rejected-alt(기각한 대안)·
+   .impact-model(추정치)로 같은 역할을 하는 컴포넌트를 보유하고 있어 기능이
+   중복되기 때문(기능 중복 컴포넌트 추가 금지 — 단순성 우선).
+
+   ── .icon-badge (아이콘 뱃지, 정민아 동일구조·이 프로젝트 토큰만 사용) ──
+   변형: 기본(--color-accent) / --funnel(--color-case-funnel, Case1 결제퍼널용) /
+         --design-system(--color-case-design-system, Case2 디자인시스템용) / --square(모디파이어)
+   예시:
+     <span class="icon-badge icon-badge--funnel">
+       <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor">...</svg>
+     </span>
+   ★장식용 아이콘은 내부 <svg>에 aria-hidden="true" 필수.
+
+   ── .chart-donut / .chart-bar (근거기반 차트, 순수 CSS/SVG — 이미지 없음) ──
+   ★★★안전장치(estimate-label과 동일 철학): --chart-value 미지정 시 도넛은
+   0%(완전히 빈 링), 막대는 0폭(완전히 빈 트랙)으로 렌더링되어 시각적으로
+   "미완성" 상태가 되도록 설계했다.
+   ★단위 차이 주의(정민아 프로젝트와 동일 컨벤션): 도넛의 --chart-value는
+   단위 없는 정수(예: 70 → conic-gradient calc(70*1%)=70%), 막대의
+   --chart-value는 퍼센트 문자열(예: 70% → width:70%) — 서로 다른 단위이니
+   혼동 금지.
+   ★이 프로젝트는 SOURCES.md에 실제 검증된 수치(Baymard 70.22%/39%/35%,
+   IBM Carbon 6.2%→44.8%)가 있으므로 worker-2가 이 수치를 이 차트로
+   시각화할 수 있다 — 단, CSS는 --chart-value(시각)와 .pct/.value 안의
+   리터럴 텍스트(실제 숫자)가 일치하는지 자동 검증할 수 없다. 반드시 같은
+   값으로 채우고, 숫자의 출처는 SOURCES.md를 그대로 인용할 것(새 수치
+   임의생성 금지 — CONTENT_BRIEF.md 절대준수사항).
+   도넛 예시:
+     <div class="chart-donut">
+       <div class="ring" style="--chart-value: 70"><span class="pct">70.22%</span></div>
+       <ul class="legend"><li class="legend-item"><span class="legend-swatch"></span>평균 장바구니 이탈률(Baymard)</li></ul>
+     </div>
+   막대 예시:
+     <div class="chart-bar-group">
+       <div class="chart-bar">
+         <span class="label">이탈 사유 1위</span>
+         <span class="track"><span class="fill" style="--chart-value: 39%"></span></span>
+         <span class="value">39%</span>
+       </div>
+     </div>
+
+   ── 신규 목업 프리미티브 4종(정민아 동일구조) ──
+   .mock-toggle(토글, .is-on으로 켜짐) / .mock-chip(제거가능 칩, .remove는 정적
+   목업이라 별도 접근성 라벨 불필요 — 실제 동작하는 버튼 아님) /
+   .mock-empty-state(아이콘+안내문구, svg는 aria-hidden 필수) / .mock-btn-tertiary(텍스트 버튼).
+   ★모든 mock-* 프리미티브는 정적 화면 목업(스크린샷 대역)이다. ★★정정(정민아
+   프로젝트 라운드7 검증 중 발견 — 이 문서에도 동일하게 적용): ".browser-frame/
+   .phone-frame에 aria-hidden을 붙이는 기존 컨벤션"은 존재하지 않는다. 실제
+   패턴은 ①SOLUTION 섹션처럼 그 mock-*가 주 정보 콘텐츠(토글 라벨·수치 등
+   실제로 읽어야 할 텍스트)인 경우 aria-hidden 금지 ②index.html 히어로처럼
+   다른 곳에 이미 전체 노출된 내용을 순수 장식/미리보기로 재사용하는 경우에만
+   그 바깥 래퍼(.hero-visual 등, .browser-frame/.phone-frame 자체가 아님)에
+   aria-hidden="true"를 적용한다.
    ========================================================= */
 
 :root {
@@ -430,6 +487,73 @@ footer .container { display: flex; justify-content: space-between; flex-wrap: wr
 .impact-model .basis { margin: 0; font-size: var(--step--1); color: var(--color-text-muted); }
 
 /* =========================================================
+   라운드8: UI키트 이식 컴포넌트 (2026-07, worker-2 재사용 대상)
+   ========================================================= */
+
+/* ---------- 아이콘 뱃지 ---------- */
+.icon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+.icon-badge svg { width: 20px; height: 20px; stroke: currentColor; }
+.icon-badge--square { border-radius: var(--radius); }
+.icon-badge--funnel { background: var(--color-case-funnel-soft); color: var(--color-case-funnel); }
+.icon-badge--design-system { background: var(--color-case-design-system-soft); color: var(--color-case-design-system); }
+
+/* ---------- 근거기반 차트 (순수 CSS/SVG — 이미지 파일 없음) ---------- */
+.chart-donut { display: inline-flex; align-items: center; gap: var(--space-3); }
+.chart-donut .ring {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* --chart-value(단위없는 정수) 미지정 시 0%로 렌더링되어 완전히 빈 링 — 의도된 안전장치 */
+  background: conic-gradient(var(--color-accent) calc(var(--chart-value, 0) * 1%), var(--color-border) 0);
+}
+.chart-donut .ring::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  background: var(--color-bg);
+}
+.chart-donut .ring .pct {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: var(--step-1);
+  font-weight: 800;
+}
+.chart-donut .legend { display: flex; flex-direction: column; gap: 6px; font-size: var(--step--1); margin: 0; padding: 0; list-style: none; }
+.chart-donut .legend-item { display: flex; align-items: center; gap: 6px; }
+.chart-donut .legend-swatch { width: 10px; height: 10px; border-radius: 2px; background: var(--color-accent); flex-shrink: 0; }
+
+.chart-bar-group { display: flex; flex-direction: column; gap: var(--space-2); }
+.chart-bar {
+  display: grid;
+  grid-template-columns: minmax(80px, auto) 1fr auto;
+  align-items: center;
+  gap: var(--space-2);
+}
+.chart-bar .label { font-size: var(--step--1); color: var(--color-text-muted); }
+.chart-bar .track { height: 10px; border-radius: 999px; background: var(--color-border); overflow: hidden; }
+/* --chart-value(퍼센트 문자열) 미지정 시 0%(폭 0)로 렌더링되어 트랙만 남는다 — 의도된 안전장치 */
+/* display:block 필수 — .fill은 <span>(인라인 요소)이라 이게 없으면 width/height가
+   브라우저에서 통째로 무시돼 항상 0×0으로 렌더링된다(라운드7 검증 중 master가 실측으로 발견) */
+.chart-bar .fill { display: block; height: 100%; width: var(--chart-value, 0%); border-radius: 999px; background: var(--color-accent); }
+.chart-bar .value { font-size: var(--step--1); font-weight: 700; font-family: var(--font-mono); text-align: right; }
+
+/* =========================================================
    코드 목업 컴포넌트 (Figma 없이 HTML/CSS로 그리는 화면 목업 — 6.솔루션 섹션용)
    ========================================================= */
 .mockup-row { display: flex; gap: var(--space-3); flex-wrap: wrap; justify-content: center; }
@@ -491,6 +615,81 @@ footer .container { display: flex; justify-content: space-between; flex-wrap: wr
 .mock-table { width: 100%; border-collapse: collapse; font-size: var(--step--1); }
 .mock-table th, .mock-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--color-border); }
 .mock-table th { color: var(--color-text-muted); font-weight: 600; }
+
+/* ---------- 라운드8 신규 목업 프리미티브 4종 ---------- */
+.mock-toggle {
+  --toggle-w: 40px;
+  --toggle-h: 22px;
+  display: inline-flex;
+  align-items: center;
+  width: var(--toggle-w);
+  height: var(--toggle-h);
+  border-radius: 999px;
+  background: var(--color-border);
+  padding: 2px;
+}
+.mock-toggle .knob {
+  width: calc(var(--toggle-h) - 4px);
+  height: calc(var(--toggle-h) - 4px);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,.25);
+  transition: transform .15s ease;
+}
+.mock-toggle.is-on { background: var(--color-accent); }
+.mock-toggle.is-on .knob { transform: translateX(calc(var(--toggle-w) - var(--toggle-h))); }
+
+.mock-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px 4px 12px;
+  border-radius: 999px;
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  font-size: var(--step--1);
+  color: var(--color-text);
+}
+.mock-chip .remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 10px;
+  line-height: 1;
+}
+
+.mock-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+.mock-empty-state svg { width: 32px; height: 32px; stroke: currentColor; opacity: .6; }
+.mock-empty-state p { margin: 0; font-size: var(--step--1); }
+
+.mock-btn-tertiary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: transparent;
+  color: var(--color-accent);
+  border: none;
+  padding: 8px 4px;
+  font-size: var(--step--1);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
 @media (min-width: 720px) {
   .case-grid { grid-template-columns: repeat(2, 1fr); }
