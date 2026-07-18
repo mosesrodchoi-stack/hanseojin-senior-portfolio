@@ -175,25 +175,90 @@
 <section>
   <div class="container">
     <div class="section-label">04 · SOLUTION</div>
-    <h2>핵심 화면</h2>
+    <h2>핵심 화면 — 전체 체크아웃 시퀀스</h2>
     <p class="prose">Figma 없이 HTML/CSS로 직접 구현한 코드 목업입니다. 실기기 스크린샷이 아닌
-      구조·정보위계 전달용 목업입니다.</p>
+      구조·정보위계 전달용 목업이며, 화면 안의 상품명·금액은 시연용 예시 데이터입니다. 이 케이스는
+      메뉴형 앱이 아니라 선형 체크아웃 플로우이므로, 진입부터 완료까지 이어지는 5단계를 순서대로
+      제시합니다.</p>
 
-    <div class="browser-frame">
-      <div class="browser-bar" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-      <div class="screen">
-        <div class="mock-list-item"><span>상품 금액</span><span>128,000원</span></div>
-        <div class="mock-list-item"><span>배송비</span><span>3,000원</span></div>
-        <div class="mock-list-item"><span>세금 포함 여부</span><span>부가세 포함</span></div>
-        <div class="mock-list-item"><span><strong>총 결제 금액</strong></span><span><strong>131,000원</strong></span></div>
-        <span class="mock-badge">본인인증 1단계 (필수 유지) · 회원가입 항목은 최소화</span>
-        <div class="mock-list-item"><span>이메일 입력 (선택)</span><span class="mock-toggle"><span class="knob"></span></span></div>
-        <div class="mock-btn-primary">결제하기</div>
-        <div class="mock-btn-tertiary">영수증 다운로드</div>
+    <div class="mockup-row" style="flex-direction: column; align-items: center; gap: var(--space-5);">
+
+      <div>
+        <div class="section-label">STEP 1 · 상품목록 / 장바구니 (예상 가격 범위만 표시)</div>
+        <div class="browser-frame">
+          <div class="browser-bar" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <div class="screen">
+            <div class="mock-list-item"><span>상품 A</span><span>98,000원</span></div>
+            <div class="mock-list-item"><span>상품 B</span><span>30,000원</span></div>
+            <span class="mock-badge muted">예상 결제 금액 약 125,000~135,000원 · 배송비·세금은 다음 단계에서 확정</span>
+            <div class="mock-btn-primary">결제 진행하기</div>
+          </div>
+        </div>
       </div>
+
+      <div>
+        <div class="section-label">STEP 2 · 배송 / 결제 정보 입력</div>
+        <div class="browser-frame">
+          <div class="browser-bar" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <div class="screen">
+            <div class="mock-list-item"><span>배송지</span><span style="font-size:12px; color:var(--color-text-muted);">입력됨</span></div>
+            <div class="mock-list-item"><span>연락처</span><span style="font-size:12px; color:var(--color-text-muted);">입력됨</span></div>
+            <div class="mock-list-item"><span>결제 수단</span><span style="font-size:12px; color:var(--color-text-muted);">신용카드 선택됨</span></div>
+            <span class="mock-badge muted">배송비·세금 포함 총액은 다음 단계에서 명확히 표기됩니다</span>
+            <div class="mock-btn-primary">다음 단계</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-label">STEP 3 · 본인인증 (1단계만 유지)</div>
+        <div class="browser-frame">
+          <div class="browser-bar" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <div class="screen">
+            <span class="mock-badge">본인인증 1단계 (필수 유지) · 회원가입 항목은 최소화</span>
+            <div class="mock-list-item"><span>휴대폰 번호</span><span style="font-size:12px; color:var(--color-text-muted);">입력됨</span></div>
+            <div class="mock-list-item"><span>인증번호 (6자리)</span><span style="font-size:12px; color:var(--color-text-muted);">입력 전</span></div>
+            <div class="mock-btn-primary">인증하기</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-label">STEP 4 · 결제 확인 (총액 확정)</div>
+        <div class="browser-frame">
+          <div class="browser-bar" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <div class="screen">
+            <div class="mock-list-item"><span>상품 금액</span><span>128,000원</span></div>
+            <div class="mock-list-item"><span>배송비</span><span>3,000원</span></div>
+            <div class="mock-list-item"><span>세금 포함 여부</span><span>부가세 포함</span></div>
+            <div class="mock-list-item"><span><strong>총 결제 금액</strong></span><span><strong>131,000원</strong></span></div>
+            <span class="mock-badge">본인인증 1단계 (필수 유지) · 회원가입 항목은 최소화</span>
+            <div class="mock-list-item"><span>이메일 입력 (선택)</span><span class="mock-toggle"><span class="knob"></span></span></div>
+            <div class="mock-btn-primary">결제하기</div>
+            <div class="mock-btn-tertiary">영수증 다운로드</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-label">STEP 5 · 결제 완료</div>
+        <div class="browser-frame">
+          <div class="browser-bar" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <div class="screen">
+            <div class="mock-empty-state">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
+              <p>결제가 완료되었습니다</p>
+            </div>
+            <div class="mock-list-item"><span>결제 금액</span><span>131,000원</span></div>
+            <div class="mock-btn-tertiary">영수증 다운로드</div>
+          </div>
+        </div>
+      </div>
+
     </div>
+
     <p class="prose" style="margin-top: var(--space-3); color:var(--color-text-muted); font-size: var(--step--1);">
-      진입 단계에서는 예상 가격 범위만 안내하고, 이 화면(결제 직전 단계)에서 배송비·세금을
+      진입 단계(STEP 1)에서는 예상 가격 범위만 안내하고, 결제 직전 단계(STEP 4)에서 배송비·세금을
       포함한 총액을 명확히 확정 고지합니다 — 법무팀의 컴플라이언스 요구를 충족하면서도
       초기 유입 단계의 표시가는 그대로 유지하는 절충 지점입니다.
     </p>
