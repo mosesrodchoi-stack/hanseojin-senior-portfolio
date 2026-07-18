@@ -1,0 +1,497 @@
+/* =========================================================
+   시니어 포트폴리오 "한서진" — 공통 디자인 시스템 (신규, 2026-07-18)
+   정민아 프로젝트(한국_취업용/assets/style.css)와는 완전히 별개 파일이며
+   비주얼 아이덴티티도 의도적으로 다르게 설계했다:
+     - 정민아: 따뜻한 개인 프로젝트 톤, 세리프 없음(Pretendard 단일), 채도 높은 그린 액센트, 둥근 라운드(6px)
+     - 한서진: 에디토리얼+데이터비주얼라이제이션 친화적인 절제된 뉴트럴 톤,
+       세리프 헤드라인/산세리프 본문 페어링, 채도 상한을 낮춘(최대 0.42, 정민아 최대 0.72 대비)
+       무채색에 가까운 팔레트, 각진 코너(2px)로 "시니어/비즈니스" 신뢰감을 표현.
+   대비 기준은 동일: 라이트/다크 각각 WCAG AA(4.5:1) 이상 실측(실측값은 각 토큰 옆 주석 참고).
+
+   ★9섹션 컴포넌트 매핑(CONTENT_BRIEF.md 구조 그대로, worker-2 케이스 스터디 2건 작성 시 참고):
+     1.헤더 → .case-hero + .case-meta-grid
+     2.Executive Summary → .exec-summary
+     3.비즈니스 컨텍스트 → .prose (일반 서술, 신규 컴포넌트 불필요)
+     4.제약과 이해관계자 긴장 → .tension-grid + .stance-card(--a/--b/--c)
+     5.접근 방식 → .prose(리서치 서술) + .rejected-alt(기각한 대안, 최소 2건)
+     6.솔루션 → 코드 목업 프리미티브(.browser-frame/.phone-frame/.mock-*, 파일 하단)
+     7.협업·리더십 → .collab-grid + .collab-item
+     8.임팩트 모델(추정) → .impact-model + .estimate-label
+     9.회고 → .prose
+
+   ★.impact-model 사용 시 필수(정민아 프로젝트 qual-label 컨벤션의 확장 — CSS ::before로
+   라벨을 자동 생성하지 않는다. 반드시 .estimate-label 안에 "추정 모델 — 실측 아님" 등
+   리터럴 텍스트를 HTML에 직접 써넣을 것. .estimate-label은 진하게 테두리 친 알약형
+   칩으로 렌더링되므로, 텍스트를 비워두면 숫자 옆에 빈 테두리만 떠서 시각적으로 어색해
+   보이도록 의도적으로 설계했다 — 텍스트 누락을 시각적으로 감지 가능하게 하는 안전장치).
+   ========================================================= */
+
+:root {
+  /* Color — 절제된 쿨 뉴트럴(정민아의 따뜻한 크림톤과 구분) */
+  --color-bg: #ffffff;
+  --color-bg-subtle: #f2f1ee;
+  --color-text: #14161a;
+  --color-text-muted: #5a5e66;
+  --color-border: #dcdedd;
+
+  /* 메인 액센트 — 잉크 플럼(무게감 있는 시니어 톤) */
+  --color-accent: #653455;        /* vs 배경 9.65:1 (AA 4.5:1 이상, 실측) */
+  --color-accent-soft: #f1eaee;
+
+  /* Case 액센트 2세트 — Case1(결제 퍼널)=클레이, Case2(디자인시스템 거버넌스)=슬레이트 */
+  --color-case-funnel: #945a3d;          /* vs 배경 5.54:1 (실측) */
+  --color-case-funnel-soft: #f1ecea;
+  --color-case-design-system: #2f5b6a;   /* vs 배경 7.43:1 (실측) */
+  --color-case-design-system-soft: #eaeff1;
+
+  /* 기각한 대안 전용(의도적 저채도 — case-funnel의 클레이와 혼동되지 않도록 채도를 낮춰
+     "탈락/보류"의 무채색 인상을 줌) */
+  --color-rejected: #755e57;             /* vs 배경 6.01:1 (실측) */
+  --color-rejected-soft: #f1ebea;
+
+  /* 이해관계자 긴장(3자 구도)용 3번째 색 — 세이지(중립/신중함 인상, 예: 법무·리스크 관점) */
+  --color-stance-sage: #496237;          /* vs 배경 6.81:1 (실측) */
+  --color-stance-sage-soft: #edf1ea;
+
+  /* Typography — 세리프 헤드라인 + 산세리프 본문 페어링(에디토리얼 신호), 모노는 데이터/숫자용 */
+  --font-display: "Noto Serif KR", Georgia, "Times New Roman", serif;
+  --font-body: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "SF Mono", ui-monospace, "Menlo", monospace;
+
+  /* Scale — clamp() 모듈러 스케일(정민아와 같은 산식 재사용, 값은 신규 산정) */
+  --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.9rem);
+  --step-0:  clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --step-1:  clamp(1.25rem, 1.18rem + 0.35vw, 1.5rem);
+  --step-2:  clamp(1.6rem, 1.45rem + 0.7vw, 2.1rem);
+  --step-3:  clamp(2.1rem, 1.8rem + 1.4vw, 3rem);
+  --step-4:  clamp(2.6rem, 2.1rem + 2.4vw, 4rem);
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+  --space-6: 6.5rem;
+  --space-7: 10rem;
+
+  --content-max: 1120px;
+  --radius: 2px; /* 정민아(6px 라운드)와 대비되는 각진 코너 — 비즈니스/구조적 인상 */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #121212;
+    --color-bg-subtle: #1a1a1a;
+    --color-text: #f0efe9;
+    --color-text-muted: #a3a2a0;
+    --color-border: #2e2e2e;
+
+    --color-accent: #c289af;               /* vs #121212 6.68:1 (실측) */
+    --color-accent-soft: #2e1f29;
+
+    --color-case-funnel: #b97655;          /* vs #121212 5.16:1 (실측) */
+    --color-case-funnel-soft: #2e241f;
+    --color-case-design-system: #4f98b0;   /* vs #121212 5.75:1 (실측) */
+    --color-case-design-system-soft: #1f2a2e;
+
+    --color-rejected: #997e75;             /* vs #121212 4.99:1 (실측) */
+    --color-rejected-soft: #2e221f;
+
+    --color-stance-sage: #709654;          /* vs #121212 5.51:1 (실측) */
+    --color-stance-sage-soft: #252e1f;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  transform: translateY(-120%);
+  background: var(--color-accent);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 0 0 var(--radius) 0;
+  font-size: var(--step--1);
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform .15s ease;
+}
+.skip-link:focus { transform: translateY(0); }
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+code { font-family: var(--font-mono); font-size: 0.92em; background: var(--color-bg-subtle); padding: 1px 5px; border-radius: var(--radius); }
+
+.container {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--space-3);
+}
+
+/* ---------- Nav ---------- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--color-border);
+}
+.nav .container { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.nav-logo { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.01em; text-decoration: none; font-size: var(--step-0); }
+.nav-links { display: flex; gap: var(--space-4); list-style: none; margin: 0; padding: 0; }
+.nav-links a { text-decoration: none; font-size: var(--step--1); color: var(--color-text-muted); }
+.nav-links a:hover { color: var(--color-text); }
+
+/* ---------- Hero ---------- */
+.hero { padding: var(--space-6) 0 var(--space-5); border-bottom: 1px solid var(--color-border); }
+.hero-eyebrow {
+  font-size: var(--step--1);
+  color: var(--color-accent);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-bottom: var(--space-2);
+  text-transform: uppercase;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: var(--step-4);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--space-3);
+  max-width: 22ch;
+}
+.hero p.lede { font-size: var(--step-1); color: var(--color-text-muted); max-width: 60ch; margin: 0 0 var(--space-4); }
+.hero-inner { display: grid; gap: var(--space-4); }
+.hero-visual { display: flex; justify-content: center; }
+@media (min-width: 860px) {
+  .hero-inner { grid-template-columns: 1.3fr 1fr; align-items: center; }
+}
+
+/* ---------- 정직 고지 박스(모든 페이지 공통, 케이스에서는 축약판) ---------- */
+.disclosure {
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius);
+  padding: var(--space-3) var(--space-3);
+  font-size: var(--step--1);
+  color: var(--color-text);
+  margin: var(--space-4) 0;
+}
+.disclosure strong { color: var(--color-accent); }
+
+/* ---------- Section ---------- */
+section { padding: var(--space-6) 0; }
+section + section { border-top: 1px solid var(--color-border); }
+.section-label {
+  font-size: var(--step--1);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+  margin-bottom: var(--space-2);
+}
+h2 { font-family: var(--font-display); font-size: var(--step-3); letter-spacing: -0.01em; margin: 0 0 var(--space-3); }
+h3 { font-family: var(--font-display); font-size: var(--step-2); letter-spacing: -0.005em; margin: 0 0 var(--space-2); }
+
+/* ---------- Case card grid (index) ---------- */
+.case-grid { display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
+@media (min-width: 640px) { .case-grid { grid-template-columns: repeat(2, 1fr); } }
+.case-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--color-bg-subtle);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.case-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -16px rgba(0,0,0,.25); }
+.case-card-thumb {
+  aspect-ratio: 16/9;
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  display: flex; align-items: center; justify-content: center;
+}
+.case-card-thumb svg { stroke: currentColor; }
+.case-card--funnel .case-card-thumb { background: var(--color-case-funnel-soft); color: var(--color-case-funnel); }
+.case-card--funnel .case-tag { color: var(--color-case-funnel); }
+.case-card--design-system .case-card-thumb { background: var(--color-case-design-system-soft); color: var(--color-case-design-system); }
+.case-card--design-system .case-tag { color: var(--color-case-design-system); }
+.case-card-body { padding: var(--space-3); }
+.case-tag { display: inline-block; font-size: var(--step--1); color: var(--color-accent); font-weight: 600; margin-bottom: var(--space-1); text-transform: uppercase; letter-spacing: .04em; }
+.case-card h3 { margin-bottom: var(--space-1); }
+.case-card p { color: var(--color-text-muted); margin: 0; font-size: var(--step--1); }
+
+/* ---------- Case study page (worker-2가 case-*.html에서 사용) ---------- */
+.case-hero { padding: var(--space-5) 0 var(--space-4); }
+.case-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  margin: var(--space-4) 0;
+}
+.case-meta-grid dt { font-size: var(--step--1); color: var(--color-text-muted); margin-bottom: 4px; }
+.case-meta-grid dd { margin: 0; font-weight: 600; }
+
+.prose { max-width: 68ch; }
+.prose p { color: var(--color-text); }
+.prose ul, .prose ol { padding-left: 1.2em; }
+.prose li { margin-bottom: .4em; }
+
+.two-col { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
+@media (min-width: 720px) { .two-col { grid-template-columns: 1fr 1fr; } }
+
+.case-nav { display: flex; justify-content: space-between; padding: var(--space-4) 0; border-top: 1px solid var(--color-border); }
+.case-nav a { text-decoration: none; font-weight: 600; }
+.case-nav .back { color: var(--color-text-muted); font-weight: 400; }
+
+/* ---------- Footer ---------- */
+footer { padding: var(--space-5) 0 var(--space-6); border-top: 1px solid var(--color-border); color: var(--color-text-muted); font-size: var(--step--1); }
+footer .container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-2); }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 18px; border-radius: var(--radius);
+  background: var(--color-accent); color: #fff;
+  text-decoration: none; font-size: var(--step--1); font-weight: 600;
+}
+.btn.ghost { background: transparent; color: var(--color-text); border: 1px solid var(--color-border); }
+
+/* =========================================================
+   케이스 스터디 전용 신규 컴포넌트 (worker-2 재사용 대상)
+   ========================================================= */
+
+/* ---------- 2. Executive Summary(피라미드 원칙 — 결론 먼저) ---------- */
+.exec-summary {
+  border-left: 4px solid var(--color-accent);
+  background: var(--color-bg-subtle);
+  padding: var(--space-4);
+  margin: var(--space-4) 0;
+}
+.exec-summary .eyebrow {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--color-accent);
+  margin-bottom: var(--space-2);
+}
+.exec-summary p {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  line-height: 1.5;
+  margin: 0;
+  color: var(--color-text);
+}
+
+/* ---------- 4. 제약과 이해관계자 긴장 ---------- */
+.tension-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-3); }
+@media (min-width: 640px) { .tension-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); } }
+.stance-card {
+  border-top: 3px solid var(--color-border);
+  background: var(--color-bg-subtle);
+  padding: var(--space-3);
+}
+.stance-card .role {
+  display: block;
+  font-size: var(--step--1);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+}
+.stance-card .priority { font-family: var(--font-display); font-size: var(--step-0); margin: 0; color: var(--color-text); }
+.stance-card--a { border-top-color: var(--color-case-funnel); }
+.stance-card--b { border-top-color: var(--color-case-design-system); }
+.stance-card--c { border-top-color: var(--color-stance-sage); }
+
+/* ---------- 5. 기각한 대안 ---------- */
+.rejected-alt {
+  border: 1px dashed var(--color-rejected);
+  border-radius: var(--radius);
+  padding: var(--space-3);
+  margin: var(--space-3) 0;
+  background: var(--color-rejected-soft);
+}
+.rejected-alt .tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: #fff;
+  background: var(--color-rejected);
+  padding: 2px 8px;
+  border-radius: var(--radius);
+  margin-bottom: var(--space-2);
+}
+.rejected-alt .alt-name {
+  font-weight: 700;
+  margin: 0 0 4px;
+  text-decoration: line-through;
+  text-decoration-color: var(--color-rejected);
+  text-decoration-thickness: 1.5px;
+}
+.rejected-alt .reason { margin: 0; color: var(--color-text); font-size: var(--step--1); }
+
+/* ---------- 7. 협업·리더십 ---------- */
+.collab-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-3); }
+@media (min-width: 600px) { .collab-grid { grid-template-columns: repeat(2, 1fr); } }
+.collab-item { display: flex; gap: var(--space-2); align-items: flex-start; }
+.collab-item .role-badge {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  padding: 4px 8px;
+  border-radius: var(--radius);
+  white-space: nowrap;
+}
+.collab-item p { margin: 0; font-size: var(--step--1); color: var(--color-text); }
+
+/* ---------- 8. 임팩트 모델(추정 — 라벨 필수) ---------- */
+.impact-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-3); }
+@media (min-width: 640px) { .impact-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); } }
+.impact-model {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 200px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-3);
+  background: var(--color-bg-subtle);
+}
+.impact-model .figure-num {
+  font-family: var(--font-mono);
+  font-size: var(--step-3);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-accent);
+}
+/* 주의: .estimate-label 안에 반드시 "추정 모델 — 실측 아님" 등 리터럴 텍스트를 넣을 것.
+   CSS로 자동 삽입하지 않음(스크린리더 노출 신뢰성 문제) — 비워두면 숫자 옆에 빈
+   테두리 알약만 남아 시각적으로 어색해지도록 의도적으로 설계함(qual-label 컨벤션 확장). */
+.impact-model .estimate-label {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--color-text);
+  border: 1.5px solid var(--color-text);
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+.impact-model .basis { margin: 0; font-size: var(--step--1); color: var(--color-text-muted); }
+
+/* =========================================================
+   코드 목업 컴포넌트 (Figma 없이 HTML/CSS로 그리는 화면 목업 — 6.솔루션 섹션용)
+   ========================================================= */
+.mockup-row { display: flex; gap: var(--space-3); flex-wrap: wrap; justify-content: center; }
+
+.browser-frame {
+  width: 100%;
+  max-width: 720px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px -24px rgba(0,0,0,.25);
+}
+.browser-frame .browser-bar { display: flex; gap: 6px; align-items: center; padding: 8px 12px; background: var(--color-bg-subtle); border-bottom: 1px solid var(--color-border); }
+.browser-frame .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--color-border); }
+.browser-frame .screen { padding: var(--space-3); display: flex; flex-direction: column; gap: var(--space-2); }
+
+.phone-frame {
+  width: 260px;
+  border: 8px solid var(--color-text);
+  border-radius: 28px;
+  background: var(--color-bg);
+  overflow: hidden;
+  box-shadow: 0 20px 40px -20px rgba(0,0,0,.3);
+}
+.phone-frame .screen { padding: var(--space-2); min-height: 420px; display: flex; flex-direction: column; gap: var(--space-2); }
+.phone-frame .status-bar { display: flex; justify-content: space-between; font-size: 11px; color: var(--color-text-muted); padding-bottom: 4px; }
+.phone-frame .app-bar { font-weight: 700; font-size: var(--step-0); padding: 4px 0 8px; border-bottom: 1px solid var(--color-border); }
+
+.mock-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: var(--radius);
+  background: var(--color-accent-soft); color: var(--color-accent); width: fit-content;
+}
+.mock-badge.muted { background: var(--color-bg-subtle); color: var(--color-text-muted); }
+
+.mock-list-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 12px; border: 1px solid var(--color-border); border-radius: var(--radius);
+  font-size: var(--step--1);
+}
+.mock-bar-track { height: 8px; border-radius: 999px; background: var(--color-border); overflow: hidden; }
+.mock-bar-fill { height: 100%; background: var(--color-accent); }
+
+.mock-btn-primary {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  background: var(--color-accent); color: #fff; border: none; border-radius: var(--radius);
+  padding: 10px; font-size: var(--step--1); font-weight: 600; text-align: center;
+}
+.mock-btn-secondary {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  background: transparent; color: var(--color-text); border: 1px solid var(--color-border);
+  border-radius: var(--radius); padding: 10px; font-size: var(--step--1); font-weight: 600; text-align: center;
+}
+
+.mock-dash-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-2); }
+.mock-dash-card { border: 1px solid var(--color-border); border-radius: var(--radius); padding: var(--space-2); }
+.mock-dash-card .num { font-size: var(--step-1); font-weight: 700; font-family: var(--font-mono); }
+
+.mock-table { width: 100%; border-collapse: collapse; font-size: var(--step--1); }
+.mock-table th, .mock-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--color-border); }
+.mock-table th { color: var(--color-text-muted); font-weight: 600; }
+
+@media (min-width: 720px) {
+  .case-grid { grid-template-columns: repeat(2, 1fr); }
+}

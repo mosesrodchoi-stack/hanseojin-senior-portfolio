@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>결제 퍼널 재설계 — 시연용 포트폴리오 | 한서진</title>
+<meta name="description" content="시니어 프로덕트 디자이너 포트폴리오 데모: 핀테크 스타트업 결제 퍼널 재설계 케이스 스터디 (가상 인물, 시연용 콘텐츠)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="결제 퍼널 재설계 — 시연용 포트폴리오 | 한서진">
+<meta property="og:description" content="시니어 프로덕트 디자이너 포트폴리오 데모: 핀테크 스타트업 결제 퍼널 재설계 케이스 스터디 (가상 인물, 시연용 콘텐츠)">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">본문으로 바로가기</a>
+
+<nav class="nav">
+  <div class="container">
+    <a class="nav-logo" href="index.html">한서진 · Portfolio</a>
+    <ul class="nav-links">
+      <li><a href="index.html#projects">프로젝트</a></li>
+      <li><a href="index.html#about">소개</a></li>
+      <li><a href="index.html#contact">연락처</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="case-hero">
+  <div class="container">
+    <div class="hero-eyebrow">CASE STUDY 01 · 핀테크 · 결제/온보딩</div>
+    <h1>결제 퍼널 재설계</h1>
+    <p class="lede">공개 벤치마크로 이탈 지점을 재구성하고, 법무·마케팅의 상충하는 요구를 조율한 체크아웃 리디자인</p>
+
+    <dl class="case-meta-grid">
+      <div><dt>역할</dt><dd>리드 프로덕트 디자이너</dd></div>
+      <div><dt>기간</dt><dd>가상 시나리오 · 약 8개월</dd></div>
+      <div><dt>팀 구성</dt><dd>PM 1, 엔지니어 4, 데이터 애널리스트 1과 협업 (가상)</dd></div>
+      <div><dt>도구</dt><dd>Figma, HTML/CSS 목업</dd></div>
+    </dl>
+
+    <div class="disclosure">
+      <strong>정직 고지.</strong> 이 케이스 스터디는 가상 인물 한서진의 시연용 포트폴리오
+      콘텐츠입니다. "시리즈B 핀테크 스타트업"은 실존 기업이 아니며, 실제 재직 경험이
+      아닙니다. 제시된 비즈니스 임팩트 수치는 실측 결과가 아니라 Baymard Institute의
+      공개 벤치마크를 인용한 추정 모델입니다.
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<section>
+  <div class="container prose">
+    <div class="exec-summary">
+      <span class="eyebrow">EXECUTIVE SUMMARY</span>
+      <p>
+        체크아웃 이탈은 업계 전반에서 반복적으로 보고되는 문제입니다 — Baymard Institute
+        벤치마크에 따르면 온라인 장바구니의 평균 이탈률은 70.22%에 달하고, 이 중 가장 큰
+        이탈 사유는 예상치 못한 추가 비용(배송비·세금 등)으로, 전체 이탈의 39%를 차지하는
+        것으로 나타납니다. 시리즈B 핀테크 스타트업의 결제 퍼널을 맡으며 이 벤치마크 패턴이
+        유사하게 적용될 가능성이 높다고 보고, 법무팀의 총액 사전고지 요구와 마케팅팀의 낮은
+        표시가 노출 요구가 충돌하는 지점을 조율하며 체크아웃 플로우를 재설계했습니다. Baymard가
+        제시한 계산 방식을 참고해 유사 규모를 가정하면, 체크아웃 UX 개선은 대형 이커머스 사이트
+        기준 최대 35%의 전환율 개선 여지가 있는 것으로 보고되며, 이 패턴이 적용된다고 가정할 때
+        이번 개선은 상당한 매출 임팩트로 이어질 수 있는 규모로 추정됩니다
+        (<span class="estimate-label">추정 모델 — 실측 아님</span>).
+      </p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container prose">
+    <div class="section-label">01 · BUSINESS CONTEXT</div>
+    <h2>왜 이 문제가 비즈니스에 중요했는가</h2>
+    <p>
+      Baymard Institute 벤치마크에 따르면 온라인 장바구니 이탈률은 평균 70.22%에 이르고,
+      이 중 39%는 결제 직전 단계에서 예상치 못한 추가 비용(배송비·세금)을 마주했을 때
+      발생합니다. 이 벤치마크 패턴을 참고하면, 초기 진입가와 최종 결제금액의 격차가 클수록
+      이탈이 늘어날 가능성이 높다고 판단했습니다.
+    </p>
+    <p>
+      다만 이 문제를 어떻게 해결할지에 대한 관점은 부서마다 달랐습니다. 엔지니어링은 결제
+      시스템의 안정성을 우선했고, 마케팅은 유입 단계의 전환율(낮은 표시가로 유입을 극대화하는
+      것)을 우선했으며, 법무는 컴플라이언스 리스크 최소화(총액을 미리, 명확하게 고지하는 것)를
+      우선했습니다 — 이 세 관점이 정면으로 충돌하는 지점이 바로 체크아웃 플로우였습니다.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-label">02 · CONSTRAINTS &amp; STAKEHOLDER TENSION</div>
+    <h2>제약과 이해관계자 긴장</h2>
+    <p class="prose">
+      주니어 프로젝트와 달리, 이 케이스는 "내가 결정했다"보다 "여러 관점을 조율해야 했다"에
+      가깝습니다. 세 부서의 입장을 각각 정리하면 다음과 같습니다.
+    </p>
+    <div class="tension-grid">
+      <div class="stance-card stance-card--c">
+        <span class="role">법무팀</span>
+        <p class="priority">전자상거래 관련 컴플라이언스 리스크를 최소화하는 것이 최우선 순위였습니다. 배송비·세금을
+          포함한 총액을 결제 이전 단계에서 명확히 사전고지해야 한다는 입장을 고수했습니다.</p>
+      </div>
+      <div class="stance-card stance-card--a">
+        <span class="role">마케팅팀</span>
+        <p class="priority">유입 단계의 전환율을 최우선으로 봤습니다. 검색·비교 채널에서는 낮은 표시가가 노출돼야
+          유입이 극대화된다는 입장이었고, 총액을 초기 화면부터 노출하면 이탈이 늘어날 것을
+          우려했습니다.</p>
+      </div>
+      <div class="stance-card stance-card--b">
+        <span class="role">엔지니어링팀</span>
+        <p class="priority">기존 PG(결제대행사) 연동 구조를 바꾸지 않는 선에서 안정성을 우선했습니다. 결제 로직을
+          큰 폭으로 변경하면 장애 위험이 커진다는 이유로 UX 레이어 중심의 변경을 선호했습니다.</p>
+      </div>
+    </div>
+    <p class="prose">
+      일정 제약도 있었습니다. 8개월의 프로젝트 기간 중 결제 시스템 자체를 교체할 시간적 여유는
+      없었기 때문에, 기존 PG 연동은 유지한 채 UX 플로우와 정보 노출 순서만으로 이 긴장을
+      해소해야 했습니다.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="container prose">
+    <div class="section-label">03 · APPROACH</div>
+    <h2>접근 방식</h2>
+    <p>
+      이 케이스의 리서치는 100% 공개 벤치마크(Baymard Institute)를 근거로 합니다. 실제
+      사용자 인터뷰나 실측 데이터는 없습니다 — 이는 이 포트폴리오가 시연용 데모라는 점과
+      직결된 한계이며, 회고에서 다시 언급합니다.
+    </p>
+    <p>세 가지 대안을 검토했고, 이 중 두 가지는 다음 사유로 기각했습니다.</p>
+
+    <div class="rejected-alt">
+      <span class="tag">기각</span>
+      <p class="alt-name">게스트 체크아웃 전면 도입</p>
+      <p class="reason">
+        회원가입 없이 바로 결제할 수 있는 게스트 체크아웃을 전면 도입하는 방안을 검토했습니다.
+        진입 장벽을 낮춰 이탈을 줄일 수 있다는 장점이 있었지만, 사기거래 리스크 관리팀이 본인인증
+        단계를 최소 1단계는 유지해야 한다고 요구해 전면 도입은 기각했습니다. 대신 본인인증은
+        유지하되 회원가입 항목은 최소화하는 절충안으로 수정했습니다.
+      </p>
+    </div>
+    <div class="rejected-alt">
+      <span class="tag">기각</span>
+      <p class="alt-name">총액을 최초 진입 단계부터 노출</p>
+      <p class="reason">
+        상품 목록·검색 결과 단계부터 배송비·세금을 포함한 총액을 노출하는 방안도 검토했습니다.
+        법무팀 입장에서는 가장 명확한 해법이었지만, 최저가 검색 유입 채널의 특성상 초기 단계부터
+        총액을 노출하면 유입 자체가 줄어들 수 있다는 마케팅팀의 우려가 있었습니다. 이 안은
+        기각하고, 대신 진입 단계에서는 예상 가격 범위만 안내하고 결제 직전 단계에서 총액을
+        확정 고지하는 절충안을 채택했습니다.
+      </p>
+    </div>
+    <div class="rejected-alt">
+      <span class="tag">기각</span>
+      <p class="alt-name">신규 PG(결제대행사)로 전면 전환</p>
+      <p class="reason">
+        더 유연한 결제 UX를 지원하는 신규 PG로 전면 전환하는 방안도 검토했습니다. 기술적으로는
+        더 나은 선택지였지만, 엔지니어링 리소스가 대규모로 추가 소요될 것으로 예상돼 8개월이라는
+        로드맵 안에서는 현실적이지 않다고 판단해 기각했습니다. 대신 기존 PG 연동 위에서 UX
+        레이어만 개선하는 방향으로 스코프를 좁혔습니다.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-label">04 · SOLUTION</div>
+    <h2>핵심 화면</h2>
+    <p class="prose">Figma 없이 HTML/CSS로 직접 구현한 코드 목업입니다. 실기기 스크린샷이 아닌
+      구조·정보위계 전달용 목업입니다.</p>
+
+    <div class="browser-frame">
+      <div class="browser-bar" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <div class="screen">
+        <div class="mock-list-item"><span>상품 금액</span><span>128,000원</span></div>
+        <div class="mock-list-item"><span>배송비</span><span>3,000원</span></div>
+        <div class="mock-list-item"><span>세금 포함 여부</span><span>부가세 포함</span></div>
+        <div class="mock-list-item"><span><strong>총 결제 금액</strong></span><span><strong>131,000원</strong></span></div>
+        <span class="mock-badge">본인인증 1단계 (필수 유지) · 회원가입 항목은 최소화</span>
+        <div class="mock-btn-primary">결제하기</div>
+      </div>
+    </div>
+    <p class="prose" style="margin-top: var(--space-3); color:var(--color-text-muted); font-size: var(--step--1);">
+      진입 단계에서는 예상 가격 범위만 안내하고, 이 화면(결제 직전 단계)에서 배송비·세금을
+      포함한 총액을 명확히 확정 고지합니다 — 법무팀의 컴플라이언스 요구를 충족하면서도
+      초기 유입 단계의 표시가는 그대로 유지하는 절충 지점입니다.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-label">05 · COLLABORATION &amp; LEADERSHIP</div>
+    <h2>협업과 리더십</h2>
+    <p class="prose">
+      주니어 케이스 스터디와 달리, 이 프로젝트에서는 여러 직군·부서와의 조율이 핵심 업무였습니다.
+    </p>
+    <div class="collab-grid">
+      <div class="collab-item">
+        <span class="role-badge">PM</span>
+        <p><strong>주간 스코프 협상</strong> — 8개월이라는 일정 안에서 어떤 항목을 이번
+          릴리스에 포함할지, 어떤 항목을 다음 단계로 미룰지 매주 조율했습니다.</p>
+      </div>
+      <div class="collab-item">
+        <span class="role-badge">ENG</span>
+        <p><strong>엔지니어링 리드와 주간 싱크</strong> — 기존 PG 연동을 유지한 채 구현 가능한
+          UX 범위가 어디까지인지 기술적 제약을 정기적으로 확인했습니다.</p>
+      </div>
+      <div class="collab-item">
+        <span class="role-badge">LEGAL·MKT</span>
+        <p><strong>법무팀·마케팅팀 합동 리뷰 세션 주선</strong> — 두 부서의 요구가 직접 충돌하는
+          지점이었기 때문에, 디자인 시안을 두고 양측이 함께 논의하는 자리를 격주로 마련해 절충안에
+          대한 합의를 끌어냈습니다.</p>
+      </div>
+      <div class="collab-item">
+        <span class="role-badge">MENTORING</span>
+        <p><strong>주니어 디자이너 1명 멘토링</strong> — 체크아웃 요약 화면의 세부 컴포넌트
+          디자인을 위임하고, 정보 위계와 접근성 관점에서 피드백을 주고받으며 진행 상황을
+          점검했습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-label">06 · IMPACT MODEL</div>
+    <h2>임팩트 모델 (추정 — 실측 아님)</h2>
+    <p class="prose">
+      아래 수치는 이 프로젝트에서 실제로 측정한 결과가 아니라, Baymard Institute의 공개
+      벤치마크를 인용해 "이 패턴이 유사하게 적용된다면"이라는 가정 하에 제시하는 추정
+      모델입니다.
+    </p>
+    <div class="impact-grid">
+      <div class="impact-model">
+        <span class="figure-num">최대 35%</span>
+        <span class="estimate-label">추정 모델 — 실측 아님</span>
+        <p class="basis">Baymard 벤치마크에 따르면 대형 이커머스 사이트는 체크아웃 UX 개선만으로
+          최대 35%의 전환율 개선 여지가 있다고 보고됩니다. 이 패턴을 참고합니다.</p>
+      </div>
+      <div class="impact-model">
+        <span class="figure-num">70.22%</span>
+        <span class="estimate-label">추정 모델 — 실측 아님</span>
+        <p class="basis">Baymard 벤치마크 기준 온라인 장바구니 평균 이탈률로, 우리 퍼널의 개선
+          여지를 가늠하는 참고 기준점입니다.</p>
+      </div>
+      <div class="impact-model">
+        <span class="figure-num">연 약 24만 파운드</span>
+        <span class="estimate-label">추정 모델 — 실측 아님</span>
+        <p class="basis">Baymard가 제시한 계산 예시(월 100만 세션·평균주문액 100파운드 가정,
+          전환율 2.00%→2.02% 개선 시)를 참고한 것으로, 이 케이스의 실제 매출과는 무관한 방법론
+          참고용 수치입니다. 유사한 규모의 서비스라면 비슷한 비율의 임팩트가 있을 수 있다고
+          가정합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container prose">
+    <div class="section-label">07 · RETROSPECTIVE</div>
+    <h2>회고</h2>
+    <p>
+      이 케이스의 가장 큰 한계는 실제 사용자 데이터나 실측 A/B 테스트 없이, 공개 벤치마크만으로
+      문제를 재구성했다는 점입니다. 실제 조직이었다면 이탈 지점을 실제 퍼널 데이터로 먼저
+      확인하고, 이번 리디자인 이후 A/B 테스트로 전환율 변화를 직접 측정했을 것입니다. 또한
+      법무·마케팅·엔지니어링 세 부서의 입장은 이 시연을 위해 구성한 가상의 시나리오이며,
+      실제 조직에서는 더 복잡한 이해관계와 절차가 개입될 가능성이 높습니다. 다음 단계로는
+      실제 사용자 세션 리플레이 데이터를 확보해 이탈 지점을 재검증하고, 이번에 채택한 절충안을
+      단계적으로 A/B 테스트해보고 싶습니다.
+    </p>
+  </div>
+</section>
+
+<div class="container case-nav">
+  <a class="back" href="index.html">← 전체 프로젝트</a>
+  <a href="case-design-system.html">다음: 멀티팀 디자인시스템 거버넌스 →</a>
+</div>
+</main>
+
+<footer>
+  <div class="container">
+    <span>© 2026 한서진 (가상 인물 · 시연용 포트폴리오)</span>
+    <span>실제 재직 경험이 아닌 시연용 데모 콘텐츠입니다</span>
+  </div>
+</footer>
+
+</body>
+</html>
